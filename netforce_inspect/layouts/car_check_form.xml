@@ -82,4 +82,7 @@
     <field name="color_car"/>
     <field name="car_proportion"/>
     <field name="no_sit"/>
+    <separator string="Other"/>
+    <field name="password"/>
+    <field name="qrcode"/>
 </form>
