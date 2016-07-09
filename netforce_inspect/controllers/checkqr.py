@@ -20,9 +20,15 @@ class CheckQR(Controller):
                 'id': id,
                 'password': password,
             }
-            res=get_model("inspection").search_read([])
+            cond=[
+                ['ref','=',id], #XXX
+                ['password','=',password],
+            ]
+            res=get_model("inspection").search_read(cond)
             if res:
                 data['obj']=res[-1]
+            else:
+                data['nothing']=True
             html=render("checkqr",data)
             self.write(html)
         except Exception as e:
