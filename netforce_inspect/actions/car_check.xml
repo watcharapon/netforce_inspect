@@ -1,7 +1,0 @@
-<action>
-    <field name="string">Car Check</field>
-    <field name="name">car_check</field>
-    <field name="view_cls">multi_view</field>
-    <field name="model">car.check</field>
-    <field name="menu">inspect_menu</field>
-</action>

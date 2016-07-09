@@ -1,5 +1,0 @@
-<action>
-    <field name="type">report_odt2</field>
-    <field name="model">car.check</field>
-    <field name="template">car_check_form</field>
-</action>

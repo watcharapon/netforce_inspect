@@ -3,10 +3,10 @@ import pyqrcode
 from netforce.model import Model, fields
 from netforce.database import get_active_db
 
-class CarCheck(Model):
-    _name="car.check"
+class Inspection(Model):
+    _name="inspection"
+    _field_name="number"
     _fields={
-        'name': fields.Char("Name"),
         'number': fields.Char("Number"),
         'result': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
         'no': fields.Char("No Check"),
@@ -106,4 +106,4 @@ class CarCheck(Model):
             'flash': 'QRCode genereate succesfully',
         }
 
-CarCheck.register()
+Inspection.register()

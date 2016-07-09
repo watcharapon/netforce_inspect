@@ -1,0 +1,7 @@
+<action>
+    <field name="string">Inspection</field>
+    <field name="name">inspection</field>
+    <field name="view_cls">multi_view</field>
+    <field name="model">inspection</field>
+    <field name="menu">inspect_menu</field>
+</action>
