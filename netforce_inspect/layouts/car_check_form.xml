@@ -1,6 +1,6 @@
 <form model="car.check">
     <head>
-        <button string="Print" icon="print" action="report_car_check_form"/>
+        <button string="Print" icon="print" action="report_car_check_form" action_options="convert=pdf"/>
         <button string="Options" dropdown="1">
             <item string="Generate QRCode" method="gen_qrcode"/>
         </button>

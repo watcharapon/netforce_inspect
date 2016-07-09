@@ -92,16 +92,16 @@ class CarCheck(Model):
 
     def gen_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]
-        url="http://128.199.71.66:9999/inspectionreport/checkqr?id=%s&password=%s"%(obj.id, obj.password)
-        url=pyqrcode.create(url)
+        link="http://128.199.71.66:9999/inspectionreport/checkqr?id=%s&password=%s"%(obj.id, obj.password)
+        url=pyqrcode.create(link)
         fname="%s.png"%(obj.number)
         obj.write({
             'qrcode': fname,
         })
         dbname=get_active_db()
-        path="static/db/"+dbname+"/files/"
+        path="static/db/"+dbname+"/files"
         fpath=path+"/"+fname
-        open(fpath,"w")
+        url.png(fpath,scale=8)
         return {
             'flash': 'QRCode genereate succesfully',
         }
