@@ -1,0 +1,6 @@
+<list model="car.check">
+    <head>
+        <button string="Print" icon="print" action="report_car_check_form"/>
+    </head>
+    <field name="name"/>
+</list>

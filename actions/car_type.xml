@@ -1,0 +1,7 @@
+<action>
+    <field name="string">Car Type</field>
+    <field name="name">car_type</field>
+    <field name="view_cls">multi_view</field>
+    <field name="model">car.type</field>
+    <field name="menu">inspect_menu</field>
+</action>

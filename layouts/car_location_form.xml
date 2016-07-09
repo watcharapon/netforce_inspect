@@ -1,0 +1,3 @@
+<form model="car.location">
+    <field name="name"/>
+</form>
