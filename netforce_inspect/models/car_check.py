@@ -1,4 +1,7 @@
+import pyqrcode
+
 from netforce.model import Model, fields
+from netforce.database import get_active_db
 
 class CarCheck(Model):
     _name="car.check"
@@ -80,6 +83,27 @@ class CarCheck(Model):
         'color_car': fields.Char("Car Color"),
         'car_proportion': fields.Decimal("Car Proportion"),
         'no_sit': fields.Decimal("No Sit"),
+
+        # other
+        'password': fields.Char("Password"),
+        'qrcode': fields.File("QRCode"),
     }
+
+
+    def gen_qrcode(self, ids, context={}):
+        obj=self.browse(ids)[0]
+        url="http://128.199.71.66:9999/inspectionreport/checkqr?id=%s&password=%s"%(obj.id, obj.password)
+        url=pyqrcode.create(url)
+        fname="%s.png"%(obj.number)
+        obj.write({
+            'qrcode': fname,
+        })
+        dbname=get_active_db()
+        path="static/db/"+dbname+"/files/"
+        fpath=path+"/"+fname
+        open(fpath,"w")
+        return {
+            'flash': 'QRCode genereate succesfully',
+        }
 
 CarCheck.register()
