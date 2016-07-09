@@ -20,7 +20,7 @@ class CheckQR(Controller):
                 'id': id,
                 'password': password,
             }
-            res=get_model("car.check").search_read([])
+            res=get_model("inspection").search_read([])
             if res:
                 data['obj']=res[-1]
             html=render("checkqr",data)
