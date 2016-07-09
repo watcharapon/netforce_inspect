@@ -107,7 +107,7 @@ class Inspection(Model):
 
     def gen_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]
-        link="http://128.199.71.66:9999/inspectionreport/checkqr?id=%s&password=%s"%(obj.id, obj.password)
+        link="http://128.199.71.66:9999/inspectionreport/checkqr?id=%s&password=%s"%(obj.ref, obj.password) #XXX
         url=pyqrcode.create(link)
         fname="%s.png"%(obj.number)
         obj.write({

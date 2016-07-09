@@ -15,11 +15,14 @@ class CheckQR(Controller):
         try:
             db.begin()
             id=self.get_argument("id")
+            if not id:
+                self.write("Missing ID")
+                return
             password=self.get_argument("password")
-            data={
-                'id': id,
-                'password': password,
-            }
+            if not password:
+                self.write("Missing Password")
+                return
+            data={}
             cond=[
                 ['ref','=',id], #XXX
                 ['password','=',password],
