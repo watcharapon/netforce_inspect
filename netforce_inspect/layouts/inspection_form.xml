@@ -13,6 +13,7 @@
             <field name="date"/>
             <field name="number_perm"/>
             <field name="location_check" create="1"/>
+            <field name="owner_perm" create="1"/>
             <field name="date_register"/>
             <field name="type_car" create="1"/>
             <field name="license_car"/>
@@ -35,6 +36,7 @@
             <field name="brake_force_left"/>
             <field name="brake_force_right"/>
             <field name="perform_brake"/>
+            <field name="perform_brake_hand"/>
             <field name="wheel"/>
             <field name="result_diff"/>
             <field name="result_break"/>

@@ -8,16 +8,15 @@ class Inspection(Model):
     _name="inspection"
     _field_name="number"
     _fields={
-        'number': fields.Char("Number"),
+        'number': fields.Char("Number", search=True),
         'ref': fields.Char("Reference"),
         'result_check': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
         'sequence_check': fields.Char("Sequence Check"),
         'date': fields.DateTime("Date Check"),
         'number_perm': fields.Char("Number Permission"),
-        #'location_check_id': fields.Many2One("car.location","Location Check"),
         'location_check': fields.Char("Location Check"),
+        'owner_perm': fields.Char("Owner Permission"),
         'date_register': fields.DateTime("Date Register"),
-        #'type_car_id': fields.Many2One("car.type","Type Car"),
         'type_car': fields.Char("Type Car"),
         'license_car': fields.Char("License Car"),
         'brake_force1_shaft_left': fields.Char("Brake Force Shaft 1 Left"),
@@ -39,6 +38,7 @@ class Inspection(Model):
         'brake_force_left': fields.Char("Brake Force Left"),
         'brake_force_right': fields.Char("Brake Force Right"),
         'perform_brake': fields.Selection([['pass','Pass'],['fail','Fail']], "Perfomance Brake"),
+        'perform_brake_hand': fields.Selection([['pass','Pass'],['fail','Fail']], "Perfomance Brake Hand"),
         'wheel': fields.Char("Wheel"),
         'result_diff': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Difference"),
         'result_break': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Break"),
