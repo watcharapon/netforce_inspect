@@ -1,8 +1,10 @@
 <menu>
     <item string="Dashboard" action="inspect_board"/>
     <item string="Insepection" action="inspection"/>
+    <!--
     <item string="Others">
         <item string="Car Type" action="car_type"/>
         <item string="Car Location" action="car_location"/>
     </item>
+    -->
 </menu>

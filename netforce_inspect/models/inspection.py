@@ -1,3 +1,4 @@
+import time
 import pyqrcode
 
 from netforce.model import Model, fields
@@ -8,14 +9,17 @@ class Inspection(Model):
     _field_name="number"
     _fields={
         'number': fields.Char("Number"),
-        'result': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
-        'no': fields.Char("No Check"),
+        'ref': fields.Char("Reference"),
+        'result_check': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
+        'sequence_check': fields.Char("Sequence Check"),
         'date': fields.DateTime("Date Check"),
         'number_perm': fields.Char("Number Permission"),
-        'location_id': fields.Many2One("car.location","Location Check"),
+        #'location_check_id': fields.Many2One("car.location","Location Check"),
+        'location_check': fields.Char("Location Check"),
         'date_register': fields.DateTime("Date Register"),
-        'type_car_id': fields.Many2One("car.type","Type Car"),
-        'no_car': fields.Char("No Car"),
+        #'type_car_id': fields.Many2One("car.type","Type Car"),
+        'type_car': fields.Char("Type Car"),
+        'license_car': fields.Char("License Car"),
         'brake_force1_shaft_left': fields.Char("Brake Force Shaft 1 Left"),
         'brake_force1_shaft_right': fields.Char("Brake Force Shaft 1 right"),
         'brake_force2_shaft_left': fields.Char("Brake Force Shaft 2 Left"),
@@ -87,8 +91,19 @@ class Inspection(Model):
         # other
         'password': fields.Char("Password"),
         'qrcode': fields.File("QRCode"),
+        'date_print': fields.Date("Date Print", function="_get_all_date", function_multi=True),
+        'date_exp': fields.Date("Date Exp"),
+        'province_id': fields.Many2One("province","Province"),
     }
 
+    def _get_all_date(self, ids, context={}):
+        res={}
+        datenow=time.strftime("%Y-%m-%d")
+        for obj in self.browse(ids):
+            res[obj.id]={
+                'date_print': datenow,
+            }
+        return res
 
     def gen_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]

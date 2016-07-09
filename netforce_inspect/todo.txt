@@ -1,0 +1,8 @@
+- generate 
+   - qrcode -> ok
+   - password -> 
+   - id -> ?
+
+- font should be the same
+- translate
+
