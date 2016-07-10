@@ -24,7 +24,7 @@ class CheckQR(Controller):
                 return
             data={}
             cond=[
-                ['ref','=',id], #XXX
+                ['number','=',id], #XXX
                 ['password','=',password],
             ]
             res=get_model("inspection").search_read(cond)
