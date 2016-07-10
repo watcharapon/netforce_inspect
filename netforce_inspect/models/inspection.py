@@ -3,6 +3,7 @@ import pyqrcode
 
 from netforce.model import Model, fields
 from netforce.database import get_active_db
+from .utils import get_random
 
 HOST="http://128.199.71.66:9999"
 
@@ -98,6 +99,25 @@ class Inspection(Model):
         'province_id': fields.Many2One("province","Province"),
     }
 
+    def _get_number(self, context={}):
+        while 1:
+            num=get_random(length=8, only_number=True)
+            res=self.search(['password','=', num])
+            if not res:
+                return num
+
+    def _get_password(self, context={}):
+        while 1:
+            pwd=get_random()
+            res=self.search(['password','=', pwd])
+            if not res:
+                return pwd
+
+    _defaults={
+        'number': _get_number,
+        'password': _get_password,
+    }
+
     def _get_all_date(self, ids, context={}):
         res={}
         datenow=time.strftime("%Y-%m-%d")
@@ -109,7 +129,7 @@ class Inspection(Model):
 
     def gen_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]
-        link=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.ref, obj.password)
+        link=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.number, obj.password)
         url=pyqrcode.create(link)
         fname="%s.png"%(obj.number)
         obj.write({
