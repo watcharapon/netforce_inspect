@@ -5,7 +5,8 @@ from netforce.model import Model, fields
 from netforce.database import get_active_db
 from .utils import get_random
 
-HOST="http://128.199.71.66:9999"
+#HOST="http://128.199.71.66:9999"
+HOST="http://127.0.0.1:9999"
 
 class Inspection(Model):
     _name="inspection"
@@ -163,7 +164,7 @@ class Inspection(Model):
 
     def view_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]
-        url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.ref, obj.password)
+        url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.number, obj.password)
         print('URL ', url)
         return {
             'next':{

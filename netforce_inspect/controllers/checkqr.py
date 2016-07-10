@@ -1,9 +1,7 @@
 from netforce.controller import Controller
 from netforce.template import render
-#from netforce import config
+from netforce.locale import set_active_locale, get_active_locale
 from netforce.database import get_connection
-#from netforce import access
-#from netforce import config
 from netforce.model import get_model
 
 class CheckQR(Controller):
@@ -11,6 +9,8 @@ class CheckQR(Controller):
 
     def get(self):
         #url="https://v5.inspection.in.th/inspectionreport/checkqr?id=1541844&password=f45681f1"
+        current_local=get_active_locale()
+        set_active_locale('th_TH')
         db=get_connection() # prevent to error get transaction
         try:
             db.begin()
@@ -22,22 +22,24 @@ class CheckQR(Controller):
             if not password:
                 self.write("Missing Password")
                 return
-            data={}
+            ctx={}
             cond=[
-                ['number','=',id], #XXX
+                ['number','=',id],
                 ['password','=',password],
             ]
             res=get_model("inspection").search_read(cond)
             if res:
-                data['obj']=res[-1]
+                ctx['obj']=res[-1]
             else:
-                data['nothing']=True
-            html=render("checkqr",data)
+                ctx['nothing']=True
+            data=ctx['obj']
+            html=render("checkqr",context=ctx, data=data)
             self.write(html)
         except Exception as e:
             self.write("ERROR : %s"%str(e))
         finally:
             if db:
                 db.commit()
+        set_active_locale(current_local)
 
 CheckQR.register()
