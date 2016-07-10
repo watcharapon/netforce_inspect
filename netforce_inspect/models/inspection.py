@@ -9,7 +9,9 @@ HOST="http://128.199.71.66:9999"
 
 class Inspection(Model):
     _name="inspection"
-    _field_name="number"
+    _name_field="number"
+    _key=["number"]
+
     _fields={
         'number': fields.Char("Number", search=True),
         'ref': fields.Char("Reference"),
@@ -118,6 +120,16 @@ class Inspection(Model):
         'password': _get_password,
     }
 
+    def create(self,vals,**kw):
+        vals['qrcode']=self.gen_qrcode(vals.get("number"), vals.get("password"))
+        new_id=super().create(vals,**kw)
+        return new_id
+
+    def write(self,ids, vals,**kw):
+        super().write(ids, vals,**kw)
+        obj=self.browse(ids)[0]
+        self.gen_qrcode(obj.number, obj.password)
+
     def _get_all_date(self, ids, context={}):
         res={}
         datenow=time.strftime("%Y-%m-%d")
@@ -127,18 +139,24 @@ class Inspection(Model):
             }
         return res
 
-    def gen_qrcode(self, ids, context={}):
-        obj=self.browse(ids)[0]
-        link=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.number, obj.password)
+    def gen_qrcode(self, id, password):
+        print("GENERATE QRCODE!")
+        link=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(id, password)
         url=pyqrcode.create(link)
-        fname="%s.png"%(obj.number)
-        obj.write({
-            'qrcode': fname,
-        })
+        fname="%s.png"%(id)
         dbname=get_active_db()
         path="static/db/"+dbname+"/files"
         fpath=path+"/"+fname
         url.png(fpath,scale=8)
+        print("FNAME => ", fname)
+        return fname
+
+    def do_qrcode(self, ids, context={}):
+        obj=self.browse(ids)[0]
+        fname=self.gen_qrcode(obj.number, obj.password)
+        obj.write({
+            'qrcode': fname,
+        })
         return {
             'flash': 'QRCode genereate succesfully',
         }
