@@ -1,0 +1,4 @@
+<menu>
+    <item string="Inspection" action="inspect_board"/>
+    <item string="General" action="gen_board"/>
+</menu>

@@ -3,6 +3,6 @@
    - password -> 
    - id -> ?
 
+- translate -> ok
 - font should be the same
-- translate
 

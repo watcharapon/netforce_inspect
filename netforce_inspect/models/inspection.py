@@ -4,6 +4,8 @@ import pyqrcode
 from netforce.model import Model, fields
 from netforce.database import get_active_db
 
+HOST="http://128.199.71.66:9999"
+
 class Inspection(Model):
     _name="inspection"
     _field_name="number"
@@ -107,7 +109,7 @@ class Inspection(Model):
 
     def gen_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]
-        link="http://128.199.71.66:9999/inspectionreport/checkqr?id=%s&password=%s"%(obj.ref, obj.password) #XXX
+        link=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.ref, obj.password)
         url=pyqrcode.create(link)
         fname="%s.png"%(obj.number)
         obj.write({
@@ -119,6 +121,17 @@ class Inspection(Model):
         url.png(fpath,scale=8)
         return {
             'flash': 'QRCode genereate succesfully',
+        }
+
+    def view_qrcode(self, ids, context={}):
+        obj=self.browse(ids)[0]
+        url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.ref, obj.password)
+        print('URL ', url)
+        return {
+            'next':{
+                'type': 'url',
+                'url': url,
+            }
         }
 
 Inspection.register()
