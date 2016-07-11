@@ -5,8 +5,7 @@ from netforce.model import Model, fields
 from netforce.database import get_active_db
 from .utils import get_random
 
-#HOST="http://128.199.71.66:9999"
-HOST="http://127.0.0.1:9999"
+HOST="http://128.199.71.66:9999"
 
 class Inspection(Model):
     _name="inspection"
@@ -22,7 +21,7 @@ class Inspection(Model):
         'number_perm': fields.Char("Number Permission"),
         'location_check': fields.Char("Location Check"),
         'owner_perm': fields.Char("Owner Permission"),
-        'date_register': fields.DateTime("Date Register"),
+        'date_register': fields.DateTime("Date Register", search=True),
         'type_car': fields.Char("Type Car"),
         'license_car': fields.Char("License Car"),
         'brake_force1_shaft_left': fields.Char("Brake Force Shaft 1 Left"),
