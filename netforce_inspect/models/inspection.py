@@ -21,7 +21,7 @@ class Inspection(Model):
         'number_perm': fields.Char("Number Permission"),
         'location_check': fields.Char("Location Check"),
         'owner_perm': fields.Char("Owner Permission"),
-        'date_register': fields.DateTime("Date Register"),
+        'date_register': fields.DateTime("Date Register", search=True),
         'type_car': fields.Char("Type Car"),
         'license_car': fields.Char("License Car"),
         'brake_force1_shaft_left': fields.Char("Brake Force Shaft 1 Left"),
