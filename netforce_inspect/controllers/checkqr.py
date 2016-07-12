@@ -22,12 +22,10 @@ class CheckQR(Controller):
             if not password:
                 self.write("Missing Password")
                 return
-            ctx={}
-            cond=[
-                ['number','=',id],
-                ['password','=',password],
-            ]
-            res=get_model("inspection").search_read(cond)
+            ctx={
+                'obj': None,
+            }
+            res=db.query("select * from inspection where number=%s and password=%s",id,password)
             if res:
                 ctx['obj']=res[-1]
             else:
