@@ -100,6 +100,7 @@ class Inspection(Model):
         'date_print': fields.Date("Date Print", function="_get_all_date", function_multi=True),
         'date_exp': fields.Date("Date Exp"),
         'province_id': fields.Many2One("province","Province"),
+        'user_id': fields.Many2One("base.user","User"),
     }
 
     def _get_number(self, context={}):
@@ -119,19 +120,14 @@ class Inspection(Model):
     _defaults={
         'number': _get_number,
         'password': _get_password,
+        'user_id': lambda *a: get_active_user(),
     }
 
-    def check_limit(self, context={}):
-        user_id=get_active_user()
-        user=get_model("base.user").browse(user_id)
-        limit=user.limit_inspect or 0
-        ids=self.search([])
-        count=len(ids)+1
-        if count > limit:
-            raise Exception("Not allow to create record more than %s"%(limit))
 
     def create(self,vals,**kw):
-        self.check_limit()
+        allow, limit, count=get_model("limit.inspect").allow_record()
+        if not allow:
+            raise Exception("Not allow to create record more than %s"%(limit))
         vals['qrcode']=self.gen_qrcode(vals.get("number"), vals.get("password"))
         new_id=super().create(vals,**kw)
         return new_id
