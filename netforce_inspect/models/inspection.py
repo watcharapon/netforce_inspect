@@ -1,8 +1,9 @@
 import time
 import pyqrcode
 
-from netforce.model import Model, fields
+from netforce.model import Model, fields, get_model
 from netforce.database import get_active_db
+from netforce.access import get_active_user
 from .utils import get_random
 
 HOST="http://128.199.71.66:9999"
@@ -120,7 +121,17 @@ class Inspection(Model):
         'password': _get_password,
     }
 
+    def check_limit(self, context={}):
+        user_id=get_active_user()
+        user=get_model("base.user").browse(user_id)
+        limit=user.limit_inspect or 0
+        ids=self.search([])
+        count=len(ids)+1
+        if count > limit:
+            raise Exception("Not allow to create record more than %s"%(limit))
+
     def create(self,vals,**kw):
+        self.check_limit()
         vals['qrcode']=self.gen_qrcode(vals.get("number"), vals.get("password"))
         new_id=super().create(vals,**kw)
         return new_id
