@@ -1,10 +1,11 @@
+import random
 import time
 import pyqrcode
 
 from netforce.model import Model, fields, get_model
 from netforce.database import get_active_db
 from netforce.access import get_active_user
-from .utils import get_random
+from .utils import get_random, get_random_ip_address, get_random_max_address
 
 HOST="http://128.199.71.66:9999"
 
@@ -20,10 +21,12 @@ class Inspection(Model):
         'sequence_check': fields.Char("Sequence Check"),
         'date': fields.DateTime("Date Check"),
         'number_perm': fields.Char("Number Permission"),
-        'location_check': fields.Char("Location Check"),
+        'location_check_id': fields.Many2One('inspect.location',"Location Check"),
         'owner_perm': fields.Char("Owner Permission"),
         'date_register': fields.DateTime("Date Register", search=True),
-        'type_car': fields.Char("Type Car"),
+        #'type_car': fields.Char("Type Car"),
+        'car_type_id': fields.Many2One("car.type","Car Type"),
+        'inspect_type_id': fields.Many2One("inspect.type","Inspect Type"),
         'license_car': fields.Char("License Car"),
         'brake_force1_shaft_left': fields.Char("Brake Force Shaft 1 Left"),
         'brake_force1_shaft_right': fields.Char("Brake Force Shaft 1 right"),
@@ -81,12 +84,13 @@ class Inspection(Model):
         'position_light_far_right': fields.Decimal("Position Light Far Right"),
         'position_light_low_left': fields.Decimal("Position Light Low Left"),
         'position_light_low_right': fields.Decimal("Position Light Low Right"),
-        'ip_address': fields.Char("IP Address"),
-        'max_address': fields.Char("Max Address"),
+        'ip_address': fields.Selection([],"IP Address"),
+        'max_address': fields.Selection([],"Max Address"),
         'name_tr_au': fields.Char("Name TR-AU"),
         'total_distance': fields.Decimal("Total Distance"),
         'image': fields.File("Image"),
-        'distance_uom_id': fields.Many2One("uom","Distance UoM"),
+        #'distance_uom_id': fields.Many2One("uom","Distance UoM"),
+        'uom': fields.Selection([['km','km']],"Distance UoM"),
         'no_car_tank': fields.Char("No Car Tank"),
         'break_image': fields.File("Break Image"),
         'kind_car': fields.Char("Kind Car"),
@@ -121,6 +125,28 @@ class Inspection(Model):
         'number': _get_number,
         'password': _get_password,
         'user_id': lambda *a: get_active_user(),
+        'uom': 'km',
+        'result_diff': 'pass',
+        'result_break': 'pass',
+        'result_break_hand': 'pass',
+        'result_wheel': 'pass',
+        'result_sound': 'pass',
+        'result_pullution': 'pass',
+        'result_horn': 'pass',
+        'result_speedmotor': 'pass',
+        'result_lamp_light': 'pass',
+        'result_turn_lamp': 'pass',
+        'result_plate_lamp': 'pass',
+        'result_glass': 'pass',
+        'result_steering': 'pass',
+        'result_wheel_tires': 'pass',
+        'result_tank_pipe': 'pass',
+        'result_lower_part': 'pass',
+        'result_chassis': 'pass',
+        'result_door_floor': 'pass',
+        'result_belt': 'pass',
+        'result_wiper_motor': 'pass',
+        'result_other': 'pass',
     }
 
 
@@ -168,7 +194,7 @@ class Inspection(Model):
             'flash': 'QRCode genereate succesfully',
         }
 
-    def view_qrcode(self, ids, context={}):
+    def view_report(self, ids, context={}):
         obj=self.browse(ids)[0]
         url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.number, obj.password)
         print('URL ', url)
@@ -178,5 +204,66 @@ class Inspection(Model):
                 'url': url,
             }
         }
+
+    def select_max_address(self,context={}):
+        data=context['data']
+        count=10
+        items=get_random_max_address(count)
+        max_address=data.get('max_address')
+        if max_address:
+            max_selected=(max_address, max_address)
+            items.append(max_selected)
+        return items
+
+    def select_ip_address(self,context={}):
+        data=context['data']
+        count=15
+        items=get_random_ip_address(count)
+        ip_address=data.get('ip_address')
+        if ip_address:
+            ip_selected=(ip_address,ip_address)
+            items.append(ip_selected)
+        return items
+
+    def onchange_location_check(self, context={}):
+        data=context['data']
+        loc_id=data.get("location_check_id")
+        if loc_id:
+            loc=get_model("inspect.location").browse(loc_id)
+            data.update({
+                'number_perm': loc.name,
+                'owner_perm': loc.name,
+                'audit_first': loc.name,
+                'audit_second': loc.name,
+                'name_tr_au': loc.name,
+            })
+        return data
+
+    def onchange_inspect_type(self, context={}):
+        data=context['data']
+        type_id=data['inspect_type_id']
+        if type_id:
+            inspect=get_model("inspect.type").browse(type_id)
+            data.update({
+                'brake_force1_shaft_left': inspect.name,
+                'brake_force1_shaft_right': inspect.name,
+                'brake_force2_shaft_left': inspect.name,
+                'brake_force2_shaft_right': inspect.name,
+                'brake_force3_shaft_left': inspect.name,
+                'brake_force3_shaft_right': inspect.name,
+                'brake_force4_shaft_left': inspect.name,
+                'brake_force4_shaft_right': inspect.name,
+                'weight_shaft1': inspect.name,
+                'weight_shaft2': inspect.name,
+                'weight_shaft3': inspect.name,
+                'weight_shaft4': inspect.name,
+                'diff_shaft1': inspect.name,
+                'diff_shaft2': inspect.name,
+                'diff_shaft3': inspect.name,
+                'diff_shaft4': inspect.name,
+                'brake_force_left': inspect.name,
+                'brake_force_right': inspect.name,
+            })
+        return data
 
 Inspection.register()

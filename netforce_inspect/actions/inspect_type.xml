@@ -1,0 +1,7 @@
+<action>
+    <field name="string">Inspect Type</field>
+    <field name="name">inspect_type</field>
+    <field name="view_cls">multi_view</field>
+    <field name="model">inspect.type</field>
+    <field name="menu">inspect_menu</field>
+</action>

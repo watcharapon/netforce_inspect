@@ -1,7 +1,0 @@
-<action>
-    <field name="string">Car Location</field>
-    <field name="name">car_location</field>
-    <field name="view_cls">multi_view</field>
-    <field name="model">car.location</field>
-    <field name="menu">inspect_menu</field>
-</action>

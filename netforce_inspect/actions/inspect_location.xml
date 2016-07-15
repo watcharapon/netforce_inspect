@@ -1,0 +1,7 @@
+<action>
+    <field name="string">Inspect Location</field>
+    <field name="name">inspect_location</field>
+    <field name="view_cls">multi_view</field>
+    <field name="model">inspect.location</field>
+    <field name="menu">inspect_menu</field>
+</action>

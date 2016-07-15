@@ -335,7 +335,7 @@ input[type=submit]:active {
 					</tr>
 					<tr>
 						<td width="70%" class="label-view text-right">ประเภท รย.</td>
-                        <td>{{obj.type_car_id.1.}}</td>
+                        <td>{{obj.car_type_id.1.}}</td>
 					</tr>
 					<tr>
 						<td width="70%" class="label-view text-right">หมายเลขเครื่องยนต์</td>
@@ -617,7 +617,8 @@ input[type=submit]:active {
 				
 					<tr>
 						<td width="70%" class="label-view text-right">ประเภทระยะทาง</td>
-                        <td>{{obj.distance_uom_id.1.}}</td>
+                        <!--<td>{{obj.distance_uom_id.1.}}</td>-->
+                        <td>{{obj.uom}}</td>
 					</tr>
 					<tr>
 						<td width="70%" class="label-view text-right">เลขตัวถังรถ</td>

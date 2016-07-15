@@ -1,0 +1,3 @@
+<form model="inspect.location">
+    <field name="name"/>
+</form>

@@ -1,10 +1,10 @@
 from netforce.model import Model, fields
 
-class CarLocation(Model):
-    _name="car.location"
-    _string="Car Location"
+class InspectLocation(Model):
+    _name="inspect.location"
+    _string="Inspect Location"
     _fields={
         'name': fields.Char("Name", required=True, search=True),
     }
 
-CarLocation.register()
+InspectLocation.register()
