@@ -9,7 +9,7 @@
     </head>
     <tabs>
         <tab string="General">
-            <field name="number"/>
+            <field name="plat_no"/>
             <newline/>
             <field name="sequence_check"/>
             <newline/>
@@ -173,7 +173,7 @@
         </tab>
         <tab string="Other Info">
         <!--<field name="ref"/>-->
-            <field name="name" string="ID" readonly="1"/>
+            <field name="number" readonly="1"/>
             <field name="password" readonly="1"/>
             <field name="date_exp"/>
             <field name="province_id"/>

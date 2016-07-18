@@ -1,3 +1,4 @@
 <list model="inspect.type">
     <field name="name"/>
+    <field name="car_type_id"/>
 </list>

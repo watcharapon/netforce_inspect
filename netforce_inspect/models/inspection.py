@@ -12,12 +12,12 @@ HOST="http://128.199.71.66:9999"
 
 class Inspection(Model):
     _name="inspection"
-    _name_field="number"
-    _key=["number"]
+    _field_name="plat_no"
+    _key=["plat_no"]
 
     _fields={
-        'name': fields.Char("Name", search=True),
         'number': fields.Char("Number", search=True),
+        'plat_no': fields.Char("Plat No", search=True),
         'ref': fields.Char("Reference"),
         'result_check': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
         'sequence_check': fields.Char("Sequence Check"),
@@ -108,7 +108,7 @@ class Inspection(Model):
         'user_id': fields.Many2One("base.user","User"),
     }
 
-    def _get_id(self, context={}):
+    def _get_number(self, context={}):
         while 1:
             num=get_random(length=8, only_number=True)
             res=self.search(['password','=', num])
@@ -123,7 +123,7 @@ class Inspection(Model):
                 return pwd
 
     _defaults={
-        'name': _get_id,
+        'number': _get_number,
         'password': _get_password,
         'user_id': lambda *a: get_active_user(),
         'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
@@ -157,14 +157,14 @@ class Inspection(Model):
         allow, limit, count=get_model("limit.inspect").allow_record()
         if not allow:
             raise Exception("Not allow to create record more than %s"%(limit))
-        vals['qrcode']=self.gen_qrcode(vals.get("name"), vals.get("password"))
+        vals['qrcode']=self.gen_qrcode(vals.get("number"), vals.get("password"))
         new_id=super().create(vals,**kw)
         return new_id
 
     def write(self,ids, vals,**kw):
         super().write(ids, vals,**kw)
         obj=self.browse(ids)[0]
-        self.gen_qrcode(obj.name, obj.password)
+        self.gen_qrcode(obj.number, obj.password)
 
     def _get_all_date(self, ids, context={}):
         res={}
@@ -189,7 +189,7 @@ class Inspection(Model):
 
     def do_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]
-        fname=self.gen_qrcode(obj.name, obj.password)
+        fname=self.gen_qrcode(obj.number, obj.password)
         obj.write({
             'qrcode': fname,
         })
@@ -199,7 +199,7 @@ class Inspection(Model):
 
     def view_report(self, ids, context={}):
         obj=self.browse(ids)[0]
-        url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.name, obj.password)
+        url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.number, obj.password)
         print('URL ', url)
         return {
             'next':{
