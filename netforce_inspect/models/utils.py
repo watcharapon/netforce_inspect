@@ -23,7 +23,7 @@ def get_random_ip_address(self,limit=10):
             if d not in digit:
                 digit.append(d)
                 break
-        ip="192.168.%s.%s"%(d%2,d)
+        ip="192.168.%s.%s"%(1,d)
         item=[ip,ip]
         items.append(item)
     return items

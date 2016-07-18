@@ -9,9 +9,7 @@
     </head>
     <tabs>
         <tab string="General">
-            <field name="number" required="1"/>
-            <newline/>
-            <field name="result_check"/>
+            <field name="number"/>
             <newline/>
             <field name="sequence_check"/>
             <newline/>
@@ -25,9 +23,9 @@
             <newline/>
             <field name="date_register"/>
             <newline/>
-            <field name="car_type_id" create="1"/>
+            <field name="car_type_id" onchange="onchange_car_type" create="1"/>
             <newline/>
-            <field name="inspect_type_id" onchange="onchange_inspect_type" create="1"/>
+            <field name="inspect_type_id" condition='[["car_type_id","=",car_type_id]]' onchange="onchange_inspect_type" create="1"/>
             <newline/>
             <field name="license_car"/>
             <newline/>
@@ -40,10 +38,6 @@
             <field name="value_volume_level"/>
             <newline/>
             <field name="value_emission"/>
-            <newline/>
-            <field name="value_co"/>
-            <newline/>
-            <field name="value_hc"/>
             <newline/>
             <field name="audit_first"/>
             <newline/>
@@ -65,9 +59,9 @@
             <newline/>
             <field name="position_light_low_right"/>
             <newline/>
-            <field name="ip_address" selection="select_ip_address"/>
+            <field name="ip_address" selection="select_ip_address" notranslation="1"/>
             <newline/>
-            <field name="max_address" selection="select_max_address"/>
+            <field name="max_address" selection="select_max_address" notranslation="1"/>
             <newline/>
             <field name="name_tr_au"/>
             <newline/>
@@ -90,6 +84,14 @@
             <field name="no_sit"/>
         </tab>
         <tab string="Inspect Types">
+            <field name="result_sound"/>
+            <newline/>
+            <field name="result_pullution"/>
+            <newline/>
+            <field name="value_co"/>
+            <newline/>
+            <field name="value_hc"/>
+            <newline/>
             <field name="brake_force1_shaft_left"/>
             <newline/>
             <field name="brake_force1_shaft_right"/>
@@ -128,6 +130,8 @@
             <newline/>
         </tab>
         <tab string="Result Inspect">
+            <field name="result_check"/>
+            <newline/>
             <field name="result_diff"/>
             <newline/>
             <field name="result_break"/>
@@ -135,10 +139,6 @@
             <field name="result_break_hand"/>
             <newline/>
             <field name="result_wheel"/>
-            <newline/>
-            <field name="result_sound"/>
-            <newline/>
-            <field name="result_pullution"/>
             <newline/>
             <field name="result_horn"/>
             <newline/>
@@ -173,7 +173,8 @@
         </tab>
         <tab string="Other Info">
         <!--<field name="ref"/>-->
-            <field name="password" required="1"/>
+            <field name="name" string="ID" readonly="1"/>
+            <field name="password" readonly="1"/>
             <field name="date_exp"/>
             <field name="province_id"/>
             <field name="qrcode"/>

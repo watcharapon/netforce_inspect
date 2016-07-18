@@ -1,3 +1,13 @@
 <form model="inspect.location">
     <field name="name"/>
+    <newline/>
+    <field name="number_perm"/>
+    <newline/>
+    <field name="owner_perm"/>
+    <newline/>
+    <field name="audit_first"/>
+    <newline/>
+    <field name="audit_second"/>
+    <newline/>
+    <field name="name_tr_au"/>
 </form>

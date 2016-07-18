@@ -29,7 +29,7 @@ class CheckQR(Controller):
             }
             #res=db.query("select * from inspection where number=%s and password=%s",id,password)
             dom=[
-                ['number','=', id],
+                ['name','=', id],
                 ['password','=', password]
             ]
             res=get_model("inspection").search_read(dom)

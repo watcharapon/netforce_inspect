@@ -1,6 +1,7 @@
 import random
 import time
 import pyqrcode
+from datetime import datetime, timedelta
 
 from netforce.model import Model, fields, get_model
 from netforce.database import get_active_db
@@ -15,6 +16,7 @@ class Inspection(Model):
     _key=["number"]
 
     _fields={
+        'name': fields.Char("Name", search=True),
         'number': fields.Char("Number", search=True),
         'ref': fields.Char("Reference"),
         'result_check': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
@@ -24,7 +26,6 @@ class Inspection(Model):
         'location_check_id': fields.Many2One('inspect.location',"Location Check"),
         'owner_perm': fields.Char("Owner Permission"),
         'date_register': fields.DateTime("Date Register", search=True),
-        #'type_car': fields.Char("Type Car"),
         'car_type_id': fields.Many2One("car.type","Car Type"),
         'inspect_type_id': fields.Many2One("inspect.type","Inspect Type"),
         'license_car': fields.Char("License Car"),
@@ -70,24 +71,24 @@ class Inspection(Model):
         'result_belt': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Belt"),
         'result_wiper_motor': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Wiper Motor"),
         'result_other': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Other"),
-        'value_volume_level': fields.Decimal("Value Volume Level"),
-        'value_emission': fields.Decimal("Value Emission"),
-        'value_co': fields.Decimal("Value CO"),
-        'value_hc': fields.Decimal("Value HC"),
+        'value_volume_level': fields.Char("Value Volume Level"),
+        'value_emission': fields.Char("Value Emission"),
+        'value_co': fields.Char("Value CO"),
+        'value_hc': fields.Char("Value HC"),
         'audit_first': fields.Char("Audi First"),
         'audit_second': fields.Char("Audi Second"),
-        'value_light_far_left': fields.Decimal("Value Light Far Left"),
-        'value_light_far_right': fields.Decimal("Value Light Far Right"),
-        'value_light_low_left': fields.Decimal("Value Light Low Left"),
-        'value_light_low_right': fields.Decimal("Value Light Low Right"),
-        'position_light_far_left': fields.Decimal("Position Light Far Left"),
-        'position_light_far_right': fields.Decimal("Position Light Far Right"),
-        'position_light_low_left': fields.Decimal("Position Light Low Left"),
-        'position_light_low_right': fields.Decimal("Position Light Low Right"),
+        'value_light_far_left': fields.Char("Value Light Far Left"),
+        'value_light_far_right': fields.Char("Value Light Far Right"),
+        'value_light_low_left': fields.Char("Value Light Low Left"),
+        'value_light_low_right': fields.Char("Value Light Low Right"),
+        'position_light_far_left': fields.Char("Position Light Far Left"),
+        'position_light_far_right': fields.Char("Position Light Far Right"),
+        'position_light_low_left': fields.Char("Position Light Low Left"),
+        'position_light_low_right': fields.Char("Position Light Low Right"),
         'ip_address': fields.Selection([],"IP Address"),
         'max_address': fields.Selection([],"Max Address"),
         'name_tr_au': fields.Char("Name TR-AU"),
-        'total_distance': fields.Decimal("Total Distance"),
+        'total_distance': fields.Char("Total Distance"),
         'image': fields.File("Image"),
         #'distance_uom_id': fields.Many2One("uom","Distance UoM"),
         'uom': fields.Selection([['km','km']],"Distance UoM"),
@@ -95,8 +96,8 @@ class Inspection(Model):
         'break_image': fields.File("Break Image"),
         'kind_car': fields.Char("Kind Car"),
         'color_car': fields.Char("Car Color"),
-        'car_proportion': fields.Decimal("Car Proportion"),
-        'no_sit': fields.Decimal("No Sit"),
+        'car_proportion': fields.Char("Car Proportion"),
+        'no_sit': fields.Char("No Sit"),
 
         # other
         'password': fields.Char("Password"),
@@ -107,7 +108,7 @@ class Inspection(Model):
         'user_id': fields.Many2One("base.user","User"),
     }
 
-    def _get_number(self, context={}):
+    def _get_id(self, context={}):
         while 1:
             num=get_random(length=8, only_number=True)
             res=self.search(['password','=', num])
@@ -122,10 +123,12 @@ class Inspection(Model):
                 return pwd
 
     _defaults={
-        'number': _get_number,
+        'name': _get_id,
         'password': _get_password,
         'user_id': lambda *a: get_active_user(),
+        'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
         'uom': 'km',
+        'result_check': 'pass',
         'result_diff': 'pass',
         'result_break': 'pass',
         'result_break_hand': 'pass',
@@ -154,14 +157,14 @@ class Inspection(Model):
         allow, limit, count=get_model("limit.inspect").allow_record()
         if not allow:
             raise Exception("Not allow to create record more than %s"%(limit))
-        vals['qrcode']=self.gen_qrcode(vals.get("number"), vals.get("password"))
+        vals['qrcode']=self.gen_qrcode(vals.get("name"), vals.get("password"))
         new_id=super().create(vals,**kw)
         return new_id
 
     def write(self,ids, vals,**kw):
         super().write(ids, vals,**kw)
         obj=self.browse(ids)[0]
-        self.gen_qrcode(obj.number, obj.password)
+        self.gen_qrcode(obj.name, obj.password)
 
     def _get_all_date(self, ids, context={}):
         res={}
@@ -186,7 +189,7 @@ class Inspection(Model):
 
     def do_qrcode(self, ids, context={}):
         obj=self.browse(ids)[0]
-        fname=self.gen_qrcode(obj.number, obj.password)
+        fname=self.gen_qrcode(obj.name, obj.password)
         obj.write({
             'qrcode': fname,
         })
@@ -196,7 +199,7 @@ class Inspection(Model):
 
     def view_report(self, ids, context={}):
         obj=self.browse(ids)[0]
-        url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.number, obj.password)
+        url=HOST+"/inspectionreport/checkqr?id=%s&password=%s"%(obj.name, obj.password)
         print('URL ', url)
         return {
             'next':{
@@ -231,11 +234,11 @@ class Inspection(Model):
         if loc_id:
             loc=get_model("inspect.location").browse(loc_id)
             data.update({
-                'number_perm': loc.name,
-                'owner_perm': loc.name,
-                'audit_first': loc.name,
-                'audit_second': loc.name,
-                'name_tr_au': loc.name,
+                'number_perm': loc.number_perm,
+                'owner_perm': loc.owner_perm,
+                'audit_first': loc.audit_first,
+                'audit_second': loc.audit_second,
+                'name_tr_au': loc.name_tr_au,
             })
         return data
 
@@ -243,27 +246,36 @@ class Inspection(Model):
         data=context['data']
         type_id=data['inspect_type_id']
         if type_id:
-            inspect=get_model("inspect.type").browse(type_id)
+            type=get_model("inspect.type").browse(type_id)
             data.update({
-                'brake_force1_shaft_left': inspect.name,
-                'brake_force1_shaft_right': inspect.name,
-                'brake_force2_shaft_left': inspect.name,
-                'brake_force2_shaft_right': inspect.name,
-                'brake_force3_shaft_left': inspect.name,
-                'brake_force3_shaft_right': inspect.name,
-                'brake_force4_shaft_left': inspect.name,
-                'brake_force4_shaft_right': inspect.name,
-                'weight_shaft1': inspect.name,
-                'weight_shaft2': inspect.name,
-                'weight_shaft3': inspect.name,
-                'weight_shaft4': inspect.name,
-                'diff_shaft1': inspect.name,
-                'diff_shaft2': inspect.name,
-                'diff_shaft3': inspect.name,
-                'diff_shaft4': inspect.name,
-                'brake_force_left': inspect.name,
-                'brake_force_right': inspect.name,
+                'result_sound': type.result_sound,
+                'result_pullution': type.result_pullution,
+                'value_co': type.value_co,
+                'value_hc': type.value_hc,
+                'brake_force1_shaft_left': type.brake_force1_shaft_left,
+                'brake_force1_shaft_right': type.brake_force2_shaft_right,
+                'brake_force2_shaft_left': type.brake_force2_shaft_left,
+                'brake_force2_shaft_right': type.brake_force2_shaft_right,
+                'brake_force3_shaft_left': type.brake_force3_shaft_left,
+                'brake_force3_shaft_right': type.brake_force3_shaft_right,
+                'brake_force4_shaft_left': type.brake_force4_shaft_left,
+                'brake_force4_shaft_right': type.brake_force4_shaft_right,
+                'weight_shaft1': type.weight_shaft1,
+                'weight_shaft2': type.weight_shaft2,
+                'weight_shaft3': type.weight_shaft3,
+                'weight_shaft4': type.weight_shaft4,
+                'diff_shaft1': type.diff_shaft1,
+                'diff_shaft2': type.diff_shaft2,
+                'diff_shaft3': type.diff_shaft3,
+                'diff_shaft4': type.diff_shaft4,
+                'brake_force_left': type.brake_force_left,
+                'brake_force_right': type.brake_force_right,
             })
+        return data
+
+    def onchange_car_type(self, context={}):
+        data=context['data']
+        data['inspect_type_id']=None
         return data
 
 Inspection.register()

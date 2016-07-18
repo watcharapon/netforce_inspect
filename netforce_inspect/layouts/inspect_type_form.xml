@@ -1,3 +1,50 @@
 <form model="inspect.type">
     <field name="name"/>
+    <newline/>
+    <field name="car_type_id"/>
+    <newline/>
+    <field name="result_sound"/>
+    <newline/>
+    <field name="result_pullution"/>
+    <newline/>
+    <field name="value_co"/>
+    <newline/>
+    <field name="value_hc"/>
+    <newline/>
+    <field name="brake_force1_shaft_left"/>
+    <newline/>
+    <field name="brake_force1_shaft_right"/>
+    <newline/>
+    <field name="brake_force2_shaft_left"/>
+    <newline/>
+    <field name="brake_force2_shaft_right"/>
+    <newline/>
+    <field name="brake_force3_shaft_left"/>
+    <newline/>
+    <field name="brake_force3_shaft_right"/>
+    <newline/>
+    <field name="brake_force4_shaft_left"/>
+    <newline/>
+    <field name="brake_force4_shaft_right"/>
+    <newline/>
+    <field name="weight_shaft1"/>
+    <newline/>
+    <field name="weight_shaft2"/>
+    <newline/>
+    <field name="weight_shaft3"/>
+    <newline/>
+    <field name="weight_shaft4"/>
+    <newline/>
+    <field name="diff_shaft1"/>
+    <newline/>
+    <field name="diff_shaft2"/>
+    <newline/>
+    <field name="diff_shaft3"/>
+    <newline/>
+    <field name="diff_shaft4"/>
+    <newline/>
+    <field name="brake_force_left"/>
+    <newline/>
+    <field name="brake_force_right"/>
+    <newline/>
 </form>
