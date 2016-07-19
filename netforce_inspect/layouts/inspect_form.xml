@@ -177,7 +177,7 @@
             <field name="password" readonly="1"/>
             <field name="date_exp"/>
             <field name="province_id"/>
-            <field name="qrcode"/>
+            <!--<field name="qrcode"/>-->
             <field name="date_print" invisible="1"/>
         </tab>
     </tabs>
