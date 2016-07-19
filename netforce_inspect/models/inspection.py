@@ -25,7 +25,8 @@ class Inspection(Model):
         'number_perm': fields.Char("Number Permission"),
         'location_check_id': fields.Many2One('inspect.location',"Location Check"),
         'owner_perm': fields.Char("Owner Permission"),
-        'date_register': fields.DateTime("Date Register", search=True),
+        #'date_register': fields.Date("Date Register", search=True),
+        'date_register': fields.Char("Date Register", search=True),
         'car_type_id': fields.Many2One("car.type","Car Type"),
         'inspect_type_id': fields.Many2One("inspect.type","Inspect Type"),
         'license_car': fields.Char("License Car"),
@@ -128,6 +129,8 @@ class Inspection(Model):
         'user_id': lambda *a: get_active_user(),
         'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
         'uom': 'km',
+        'perform_brake': 'pass',
+        'perform_brake_hand': 'pass',
         'result_check': 'pass',
         'result_diff': 'pass',
         'result_break': 'pass',
@@ -248,10 +251,6 @@ class Inspection(Model):
         if type_id:
             type=get_model("inspect.type").browse(type_id)
             data.update({
-                'result_sound': type.result_sound,
-                'result_pullution': type.result_pullution,
-                'value_co': type.value_co,
-                'value_hc': type.value_hc,
                 'brake_force1_shaft_left': type.brake_force1_shaft_left,
                 'brake_force1_shaft_right': type.brake_force2_shaft_right,
                 'brake_force2_shaft_left': type.brake_force2_shaft_left,
@@ -270,6 +269,16 @@ class Inspection(Model):
                 'diff_shaft4': type.diff_shaft4,
                 'brake_force_left': type.brake_force_left,
                 'brake_force_right': type.brake_force_right,
+                'value_co': type.value_co,
+                'value_hc': type.value_hc,
+                'value_light_far_left': type.value_light_far_left,
+                'value_light_far_right': type.value_light_far_right,
+                'value_light_low_left': type.value_light_low_left,
+                'value_light_low_right': type.value_light_low_right,
+                'position_light_far_left': type.position_light_far_left,
+                'position_light_far_right': type.position_light_far_right,
+                'position_light_low_left': type.position_light_low_left,
+                'position_light_low_right': type.position_light_low_right,
             })
         return data
 

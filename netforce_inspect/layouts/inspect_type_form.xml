@@ -3,14 +3,6 @@
     <newline/>
     <field name="car_type_id"/>
     <newline/>
-    <field name="result_sound"/>
-    <newline/>
-    <field name="result_pullution"/>
-    <newline/>
-    <field name="value_co"/>
-    <newline/>
-    <field name="value_hc"/>
-    <newline/>
     <field name="brake_force1_shaft_left"/>
     <newline/>
     <field name="brake_force1_shaft_right"/>
@@ -46,5 +38,25 @@
     <field name="brake_force_left"/>
     <newline/>
     <field name="brake_force_right"/>
+    <newline/>
+    <field name="value_co"/>
+    <newline/>
+    <field name="value_hc"/>
+    <newline/>
+    <field name="value_light_far_left"/>
+    <newline/>
+    <field name="value_light_far_right"/>
+    <newline/>
+    <field name="value_light_low_left"/>
+    <newline/>
+    <field name="value_light_low_right"/>
+    <newline/>
+    <field name="position_light_far_left"/>
+    <newline/>
+    <field name="position_light_far_right"/>
+    <newline/>
+    <field name="position_light_low_left"/>
+    <newline/>
+    <field name="position_light_low_right"/>
     <newline/>
 </form>

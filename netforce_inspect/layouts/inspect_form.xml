@@ -11,6 +11,8 @@
         <tab string="General">
             <field name="plat_no"/>
             <newline/>
+            <field name="province_id"/>
+            <newline/>
             <field name="sequence_check"/>
             <newline/>
             <field name="date"/>
@@ -29,35 +31,11 @@
             <newline/>
             <field name="license_car"/>
             <newline/>
-            <field name="perform_brake"/>
-            <newline/>
-            <field name="perform_brake_hand"/>
-            <newline/>
             <field name="wheel"/>
-            <newline/>
-            <field name="value_volume_level"/>
-            <newline/>
-            <field name="value_emission"/>
             <newline/>
             <field name="audit_first"/>
             <newline/>
             <field name="audit_second"/>
-            <newline/>
-            <field name="value_light_far_left"/>
-            <newline/>
-            <field name="value_light_far_right"/>
-            <newline/>
-            <field name="value_light_low_left"/>
-            <newline/>
-            <field name="value_light_low_right"/>
-            <newline/>
-            <field name="position_light_far_left"/>
-            <newline/>
-            <field name="position_light_far_right"/>
-            <newline/>
-            <field name="position_light_low_left"/>
-            <newline/>
-            <field name="position_light_low_right"/>
             <newline/>
             <field name="ip_address" selection="select_ip_address" notranslation="1"/>
             <newline/>
@@ -84,14 +62,6 @@
             <field name="no_sit"/>
         </tab>
         <tab string="Inspect Types">
-            <field name="result_sound"/>
-            <newline/>
-            <field name="result_pullution"/>
-            <newline/>
-            <field name="value_co"/>
-            <newline/>
-            <field name="value_hc"/>
-            <newline/>
             <field name="brake_force1_shaft_left"/>
             <newline/>
             <field name="brake_force1_shaft_right"/>
@@ -128,9 +98,41 @@
             <newline/>
             <field name="brake_force_right"/>
             <newline/>
+            <field name="value_volume_level"/>
+            <newline/>
+            <field name="value_emission"/>
+            <newline/>
+            <field name="value_co"/>
+            <newline/>
+            <field name="value_hc"/>
+            <newline/>
+            <field name="value_light_far_left"/>
+            <newline/>
+            <field name="value_light_far_right"/>
+            <newline/>
+            <field name="value_light_low_left"/>
+            <newline/>
+            <field name="value_light_low_right"/>
+            <newline/>
+            <field name="position_light_far_left"/>
+            <newline/>
+            <field name="position_light_far_right"/>
+            <newline/>
+            <field name="position_light_low_left"/>
+            <newline/>
+            <field name="position_light_low_right"/>
+            <newline/>
         </tab>
         <tab string="Result Inspect">
             <field name="result_check"/>
+            <newline/>
+            <field name="result_sound"/>
+            <newline/>
+            <field name="result_pullution"/>
+            <newline/>
+            <field name="perform_brake"/>
+            <newline/>
+            <field name="perform_brake_hand"/>
             <newline/>
             <field name="result_diff"/>
             <newline/>
@@ -176,7 +178,6 @@
             <field name="number" readonly="1"/>
             <field name="password" readonly="1"/>
             <field name="date_exp"/>
-            <field name="province_id"/>
             <!--<field name="qrcode"/>-->
             <field name="date_print" invisible="1"/>
         </tab>

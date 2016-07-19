@@ -7,10 +7,6 @@ class InspectType(Model):
     _fields={
         'name': fields.Char("Name", required=True, search=True),
         'car_type_id': fields.Many2One("car.type","Car Type"),
-        'result_sound': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Sound"),
-        'result_pullution': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Pullution"),
-        'value_co': fields.Char("Value CO"),
-        'value_hc': fields.Char("Value HC"),
         'brake_force1_shaft_left': fields.Char("Brake Force Shaft 1 Left"),
         'brake_force1_shaft_right': fields.Char("Brake Force Shaft 1 right"),
         'brake_force2_shaft_left': fields.Char("Brake Force Shaft 2 Left"),
@@ -29,6 +25,16 @@ class InspectType(Model):
         'diff_shaft4': fields.Char("Different Shaft 4"),
         'brake_force_left': fields.Char("Brake Force Left"),
         'brake_force_right': fields.Char("Brake Force Right"),
+        'value_co': fields.Char("Value CO"),
+        'value_hc': fields.Char("Value HC"),
+        'value_light_far_left': fields.Char("Value Light Far Left"),
+        'value_light_far_right': fields.Char("Value Light Far Right"),
+        'value_light_low_left': fields.Char("Value Light Low Left"),
+        'value_light_low_right': fields.Char("Value Light Low Right"),
+        'position_light_far_left': fields.Char("Position Light Far Left"),
+        'position_light_far_right': fields.Char("Position Light Far Right"),
+        'position_light_low_left': fields.Char("Position Light Low Left"),
+        'position_light_low_right': fields.Char("Position Light Low Right"),
     }
 
 InspectType.register()
