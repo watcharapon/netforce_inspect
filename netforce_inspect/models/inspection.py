@@ -19,6 +19,7 @@ class Inspection(Model):
     _fields={
         'number': fields.Char("Number", search=True),
         'plat_no': fields.Char("Plat No", search=True),
+        'plat_no2': fields.Char("Plat No2", search=True),
         'ref': fields.Char("Reference"),
         'result_check': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
         'sequence_check': fields.Char("Sequence Check"),

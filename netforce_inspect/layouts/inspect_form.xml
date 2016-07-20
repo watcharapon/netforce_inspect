@@ -9,7 +9,8 @@
     </head>
     <tabs>
         <tab string="General">
-            <field name="plat_no"/>
+            <field name="plat_no" span="3" offset="1"/>
+            <field name="plat_no2" span="3" nolabel="1"/>
             <newline/>
             <field name="province_id"/>
             <newline/>
