@@ -5,4 +5,5 @@
     <field name="plat_no_text"/>
     <field name="result_check"/>
     <field name="date_register"/>
+    <field name="image" preview="1"/>
 </list>
