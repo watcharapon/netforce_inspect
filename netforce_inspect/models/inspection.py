@@ -13,8 +13,8 @@ HOST="http://v5.insspection.com"
 
 class Inspection(Model):
     _name="inspection"
-    _field_name="plat_no_text"
-    _key=["plat_no_text"]
+    _field_name="number"
+    _key=["number"]
 
     def _get_plat_no(self, ids, context={}):
         res={}
@@ -38,7 +38,7 @@ class Inspection(Model):
         'location_check_id': fields.Many2One('inspect.location',"Location Check"),
         'owner_perm': fields.Char("Owner Permission"),
         #'date_register': fields.Date("Date Register", search=True),
-        'date_register': fields.Char("Date Register", search=True),
+        'date_register': fields.Char("Date Register"),
         'car_type_id': fields.Many2One("car.type","Car Type"),
         'inspect_type_id': fields.Many2One("inspect.type","Inspect Type"),
         'license_car': fields.Char("License Car"),
@@ -113,7 +113,7 @@ class Inspection(Model):
         'no_sit': fields.Char("No Sit"),
 
         # other
-        'password': fields.Char("Password"),
+        'password': fields.Char("Password", search=True),
         'qrcode': fields.File("QRCode"),
         'date_print': fields.Date("Date Print", function="_get_all_date", function_multi=True),
         'date_exp': fields.Date("Date Exp"),
