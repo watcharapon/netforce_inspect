@@ -171,10 +171,12 @@ class Inspection(Model):
 
     def _get_all_date(self, ids, context={}):
         res={}
-        datenow=time.strftime("%Y-%m-%d")
+        date_print=time.strftime("%Y-%m-%d")
         for obj in self.browse(ids):
+            if obj.date:
+                date_print=obj.date.split(" ")[0]
             res[obj.id]={
-                'date_print': datenow,
+                'date_print': date_print,
             }
         return res
 

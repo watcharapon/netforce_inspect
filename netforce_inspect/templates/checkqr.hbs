@@ -288,7 +288,7 @@ input[type=submit]:active {
                 {{else}}
 					<tr>
 						<td width="70%" class="label-view text-right">เลขทะเบียน</td>
-                        <td>{{obj.plat_no}}</td>
+                        <td>{{obj.plat_no}}&nbsp;&nbsp;{{obj.province_id.1.}}</td>
 						
 					</tr>
 				
@@ -318,7 +318,7 @@ input[type=submit]:active {
 				
 					<tr>
 						<td width="70%" class="label-view text-right">ชื่อสถานตรวจสภาพรถ</td>
-                        <td>{{obj.location}}</td>
+                        <td>{{obj.location_check_id.1.}}</td>
 						
 					</tr>
 				
@@ -337,10 +337,12 @@ input[type=submit]:active {
 						<td width="70%" class="label-view text-right">ประเภท รย.</td>
                         <td>{{obj.car_type_id.1.}}</td>
 					</tr>
+                    <!--
 					<tr>
 						<td width="70%" class="label-view text-right">แบบ</td>
                         <td>{{obj.inspect_type_id.1.}}</td>
 					</tr>
+                    -->
 					<tr>
 						<td width="70%" class="label-view text-right">หมายเลขเครื่องยนต์</td>
                         <td>{{obj.license_car}}</td>
