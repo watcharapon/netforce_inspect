@@ -123,6 +123,8 @@
             <newline/>
             <field name="position_light_low_right"/>
             <newline/>
+            <field name="perform_brake"/>
+            <newline/>
         </tab>
         <tab string="Result Inspect">
             <field name="result_check"/>
@@ -130,8 +132,6 @@
             <field name="result_sound"/>
             <newline/>
             <field name="result_pullution"/>
-            <newline/>
-            <field name="perform_brake"/>
             <newline/>
             <field name="perform_brake_hand"/>
             <newline/>

@@ -19,7 +19,7 @@ def get_random_ip_address(self,limit=10):
     digit=[]
     for i in range(limit):
         while 1:
-            d=int(random.random()*100)
+            d=int(random.random()*256)
             if d not in digit:
                 digit.append(d)
                 break
@@ -43,7 +43,7 @@ def get_random_max_address(self,limit=10):
             if d2 not in digit2:
                 digit2.append(d2)
                 break
-        chars = string.ascii_lowercase
+        chars = string.ascii_uppercase
         digits = string.digits
         between=""
         rnd = random.SystemRandom()

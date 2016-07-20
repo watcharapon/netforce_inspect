@@ -60,7 +60,7 @@ class Inspection(Model):
         'diff_shaft4': fields.Char("Different Shaft 4"),
         'brake_force_left': fields.Char("Brake Force Left"),
         'brake_force_right': fields.Char("Brake Force Right"),
-        'perform_brake': fields.Selection([['pass','Pass'],['fail','Fail']], "Perfomance Brake"),
+        'perform_brake': fields.Char("Perfomance Brake"),
         'perform_brake_hand': fields.Selection([['pass','Pass'],['fail','Fail']], "Perfomance Brake Hand"),
         'wheel': fields.Char("Wheel"),
         'result_diff': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Difference"),
@@ -141,7 +141,7 @@ class Inspection(Model):
         'user_id': lambda *a: get_active_user(),
         'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
         'uom': 'km',
-        'perform_brake': 'pass',
+        #'perform_brake': 'pass',
         'perform_brake_hand': 'pass',
         'result_check': 'pass',
         'result_diff': 'pass',
@@ -285,6 +285,7 @@ class Inspection(Model):
                 'diff_shaft4': type.diff_shaft4,
                 'brake_force_left': type.brake_force_left,
                 'brake_force_right': type.brake_force_right,
+                'value_volume_level': type.value_volume_level,
                 'value_co': type.value_co,
                 'value_hc': type.value_hc,
                 'value_light_far_left': type.value_light_far_left,
@@ -295,6 +296,7 @@ class Inspection(Model):
                 'position_light_far_right': type.position_light_far_right,
                 'position_light_low_left': type.position_light_low_left,
                 'position_light_low_right': type.position_light_low_right,
+                'perform_brake': type.perform_brake,
             })
         return data
 
