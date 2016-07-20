@@ -13,13 +13,23 @@ HOST="http://v5.insspection.com"
 
 class Inspection(Model):
     _name="inspection"
-    _field_name="plat_no"
-    _key=["plat_no"]
+    _field_name="plat_no_text"
+    _key=["plat_no_text"]
+
+    def _get_plat_no(self, ids, context={}):
+        res={}
+        for obj in self.browse(ids):
+            pn1=obj.plat_no or ""
+            pn2=obj.plat_no2 or ""
+            plat_no='   '.join([pn1, pn2])
+            res[obj.id]=plat_no
+        return res
 
     _fields={
         'number': fields.Char("Number", search=True),
-        'plat_no': fields.Char("Plat No", search=True),
-        'plat_no2': fields.Char("Plat No2", search=True),
+        'plat_no': fields.Char("Plat No"),
+        'plat_no2': fields.Char("Plat No2"),
+        'plat_no_text': fields.Char("Plat No Text", function="_get_plat_no", store=True, search=True),
         'ref': fields.Char("Reference"),
         'result_check': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
         'sequence_check': fields.Char("Sequence Check"),
@@ -164,12 +174,14 @@ class Inspection(Model):
             raise Exception("Not allow to create record more than %s"%(limit))
         vals['qrcode']=self.gen_qrcode(vals.get("number"), vals.get("password"))
         new_id=super().create(vals,**kw)
+        self.function_store([new_id])
         return new_id
 
     def write(self,ids, vals,**kw):
         super().write(ids, vals,**kw)
         obj=self.browse(ids)[0]
         self.gen_qrcode(obj.number, obj.password)
+        self.function_store(ids)
 
     def _get_all_date(self, ids, context={}):
         res={}

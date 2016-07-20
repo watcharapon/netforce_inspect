@@ -2,7 +2,7 @@
     <head>
         <button string="Print" icon="print" action="report_inspection_form" action_options="convert=pdf"/>
     </head>
-    <field name="plat_no"/>
+    <field name="plat_no_text"/>
     <field name="result_check"/>
     <field name="date_register"/>
 </list>

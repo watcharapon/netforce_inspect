@@ -179,6 +179,7 @@
             <field name="number" readonly="1"/>
             <field name="password" readonly="1"/>
             <field name="date_exp"/>
+            <field name="user_id" readonly="1"/>
             <!--<field name="qrcode"/>-->
             <field name="date_print" invisible="1"/>
         </tab>
