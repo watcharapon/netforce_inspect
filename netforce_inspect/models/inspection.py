@@ -8,7 +8,8 @@ from netforce.database import get_active_db
 from netforce.access import get_active_user
 from .utils import get_random, get_random_ip_address, get_random_max_address
 
-HOST="http://128.199.71.66:9999"
+#HOST="http://128.199.71.66:9999"
+HOST="http://v5.insspection.com"
 
 class Inspection(Model):
     _name="inspection"
