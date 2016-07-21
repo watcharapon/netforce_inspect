@@ -13,13 +13,34 @@ HOST="http://v5.insspection.com"
 
 class Inspection(Model):
     _name="inspection"
-    _field_name="plat_no"
-    _key=["plat_no"]
+    _field_name="number"
+    _key=["number"]
+
+    def _get_plat_no(self, ids, context={}):
+        res={}
+        for obj in self.browse(ids):
+            pn1=obj.plat_no or ""
+            pn2=obj.plat_no2 or ""
+            plat_no='   '.join([pn1, pn2])
+            res[obj.id]=plat_no
+        return res
+
+    def _get_date_exp(self, ids, context={}):
+        res={}
+        fmt="%Y-%m-%d"
+        for obj in self.browse(ids):
+            d1=datetime.now()
+            if obj.date:
+                date=obj.date.split(" ")[0]
+                d1=datetime.strptime(date, fmt)
+            res[obj.id]=(d1+timedelta(days=90)).strftime(fmt)
+        return res
 
     _fields={
         'number': fields.Char("Number", search=True),
-        'plat_no': fields.Char("Plat No", search=True),
-        'plat_no2': fields.Char("Plat No2", search=True),
+        'plat_no': fields.Char("Plat No"),
+        'plat_no2': fields.Char("Plat No2"),
+        'plat_no_text': fields.Char("Plat No Text", function="_get_plat_no", store=True, search=True),
         'ref': fields.Char("Reference"),
         'result_check': fields.Selection([['pass','Pass'],['fail','Fail']], 'Result Check'),
         'sequence_check': fields.Char("Sequence Check"),
@@ -28,7 +49,7 @@ class Inspection(Model):
         'location_check_id': fields.Many2One('inspect.location',"Location Check"),
         'owner_perm': fields.Char("Owner Permission"),
         #'date_register': fields.Date("Date Register", search=True),
-        'date_register': fields.Char("Date Register", search=True),
+        'date_register': fields.Char("Date Register"),
         'car_type_id': fields.Many2One("car.type","Car Type"),
         'inspect_type_id': fields.Many2One("inspect.type","Inspect Type"),
         'license_car': fields.Char("License Car"),
@@ -50,7 +71,7 @@ class Inspection(Model):
         'diff_shaft4': fields.Char("Different Shaft 4"),
         'brake_force_left': fields.Char("Brake Force Left"),
         'brake_force_right': fields.Char("Brake Force Right"),
-        'perform_brake': fields.Selection([['pass','Pass'],['fail','Fail']], "Perfomance Brake"),
+        'perform_brake': fields.Char("Perfomance Brake"),
         'perform_brake_hand': fields.Selection([['pass','Pass'],['fail','Fail']], "Perfomance Brake Hand"),
         'wheel': fields.Char("Wheel"),
         'result_diff': fields.Selection([['pass','Pass'],['fail','Fail']], "Result Difference"),
@@ -103,10 +124,10 @@ class Inspection(Model):
         'no_sit': fields.Char("No Sit"),
 
         # other
-        'password': fields.Char("Password"),
+        'password': fields.Char("Password", search=True),
         'qrcode': fields.File("QRCode"),
         'date_print': fields.Date("Date Print", function="_get_all_date", function_multi=True),
-        'date_exp': fields.Date("Date Exp"),
+        'date_exp': fields.Date("Date Exp", function="_get_date_exp", store=True),
         'province_id': fields.Many2One("province","Province"),
         'user_id': fields.Many2One("base.user","User"),
     }
@@ -129,9 +150,9 @@ class Inspection(Model):
         'number': _get_number,
         'password': _get_password,
         'user_id': lambda *a: get_active_user(),
-        'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
+        #'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
         'uom': 'km',
-        'perform_brake': 'pass',
+        #'perform_brake': 'pass',
         'perform_brake_hand': 'pass',
         'result_check': 'pass',
         'result_diff': 'pass',
@@ -164,12 +185,14 @@ class Inspection(Model):
             raise Exception("Not allow to create record more than %s"%(limit))
         vals['qrcode']=self.gen_qrcode(vals.get("number"), vals.get("password"))
         new_id=super().create(vals,**kw)
+        self.function_store([new_id])
         return new_id
 
     def write(self,ids, vals,**kw):
         super().write(ids, vals,**kw)
         obj=self.browse(ids)[0]
         self.gen_qrcode(obj.number, obj.password)
+        self.function_store(ids)
 
     def _get_all_date(self, ids, context={}):
         res={}
@@ -273,6 +296,7 @@ class Inspection(Model):
                 'diff_shaft4': type.diff_shaft4,
                 'brake_force_left': type.brake_force_left,
                 'brake_force_right': type.brake_force_right,
+                'value_volume_level': type.value_volume_level,
                 'value_co': type.value_co,
                 'value_hc': type.value_hc,
                 'value_light_far_left': type.value_light_far_left,
@@ -283,6 +307,7 @@ class Inspection(Model):
                 'position_light_far_right': type.position_light_far_right,
                 'position_light_low_left': type.position_light_low_left,
                 'position_light_low_right': type.position_light_low_right,
+                'perform_brake': type.perform_brake,
             })
         return data
 

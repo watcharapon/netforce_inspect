@@ -25,6 +25,7 @@ class InspectType(Model):
         'diff_shaft4': fields.Char("Different Shaft 4"),
         'brake_force_left': fields.Char("Brake Force Left"),
         'brake_force_right': fields.Char("Brake Force Right"),
+        'value_volume_level': fields.Char("Value Volume Level"),
         'value_co': fields.Char("Value CO"),
         'value_hc': fields.Char("Value HC"),
         'value_light_far_left': fields.Char("Value Light Far Left"),
@@ -35,6 +36,7 @@ class InspectType(Model):
         'position_light_far_right': fields.Char("Position Light Far Right"),
         'position_light_low_left': fields.Char("Position Light Low Left"),
         'position_light_low_right': fields.Char("Position Light Low Right"),
+        'perform_brake': fields.Char("Perfomance Brake"),
     }
 
 InspectType.register()

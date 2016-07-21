@@ -39,6 +39,8 @@
     <newline/>
     <field name="brake_force_right"/>
     <newline/>
+    <field name="value_volume_level"/>
+    <newline/>
     <field name="value_co"/>
     <newline/>
     <field name="value_hc"/>
@@ -58,5 +60,7 @@
     <field name="position_light_low_left"/>
     <newline/>
     <field name="position_light_low_right"/>
+    <newline/>
+    <field name="perform_brake"/>
     <newline/>
 </form>
