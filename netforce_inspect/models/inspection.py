@@ -25,6 +25,17 @@ class Inspection(Model):
             res[obj.id]=plat_no
         return res
 
+    def _get_date_exp(self, ids, context={}):
+        res={}
+        fmt="%Y-%m-%d"
+        for obj in self.browse(ids):
+            d1=datetime.now()
+            if obj.date:
+                date=obj.date.split(" ")[0]
+                d1=datetime.strptime(date, fmt)
+            res[obj.id]=(d1+timedelta(days=90)).strftime(fmt)
+        return res
+
     _fields={
         'number': fields.Char("Number", search=True),
         'plat_no': fields.Char("Plat No"),
@@ -116,7 +127,7 @@ class Inspection(Model):
         'password': fields.Char("Password", search=True),
         'qrcode': fields.File("QRCode"),
         'date_print': fields.Date("Date Print", function="_get_all_date", function_multi=True),
-        'date_exp': fields.Date("Date Exp"),
+        'date_exp': fields.Date("Date Exp", function="_get_date_exp", store=True),
         'province_id': fields.Many2One("province","Province"),
         'user_id': fields.Many2One("base.user","User"),
     }
@@ -139,7 +150,7 @@ class Inspection(Model):
         'number': _get_number,
         'password': _get_password,
         'user_id': lambda *a: get_active_user(),
-        'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
+        #'date_exp': lambda *a: (datetime.now()+timedelta(days=90)).strftime("%Y-%m-%d"),
         'uom': 'km',
         #'perform_brake': 'pass',
         'perform_brake_hand': 'pass',
